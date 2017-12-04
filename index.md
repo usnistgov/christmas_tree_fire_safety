@@ -37,8 +37,8 @@ tree fire safety efforts by conducting a series of fire experiments to
 demonstrate how a frequently watered Christmas tree may be less of a fire
 hazard than a dry one. In these experiments, NIST provided the measurement
 science necessary to quantify fire size (i.e. Heat Release Rate, HRR). Results
-of these experiments can be viewed here: ***Link to Christmas Tree video
-landing page***
+of these experiments can be viewed 
+[*here*](https://www.nist.gov/topics/forensic-science/organization-scientific-area-committees-osac/holiday-fire-safety/what-does).
 
 These experiments are part of a greater project that shares a vital fire safety
 message during the holiday season and highlights relevant research projects and
