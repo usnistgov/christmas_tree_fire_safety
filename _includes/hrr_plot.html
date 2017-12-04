@@ -1,0 +1,180 @@
+
+<!-- Main Content
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="w3-container w3-margin">
+  <div class="w3-padding w3-card-4">
+    <div class="w3-padding-small" id="myplot"></div>
+    <form class="w3-small w3-light-grey w3-border w3-border-green w3-padding-small" id="myform">
+      <div class="w3-row-padding">
+        <label class="w3-col m4 s9" for="PHRR">Peak HRR (kW)</label>
+        <output class="w3-col m2 s3 w3-right-align" id="PHRRout" for="m">1500</output>
+        <input class="w3-col m6 w3-mobile w3-hover-shadow" id="PHRR" type="range" min="0.1" max="3500" step="0.1" value="1500">
+      </div>
+      <div class="w3-row-padding">
+        <label class="w3-col m4 s9" for="alpha">Fire Growth Rate</label>
+        <output class="w3-col m2 s3 w3-right-align" id="alphaout" for="m">3.14</output>
+        <input class="w3-col m6 w3-mobile w3-hover-shadow" id="alpha" type="range" min="0.2" max="12" step="0.01" value="3.14">
+      </div>
+      <div class="w3-row-padding">
+        <label class="w3-col m4 s9" for="tdur">Steady Burn Time</label>
+        <output class="w3-col m2 s3 w3-right-align" id="tdurout" for="m">1.5</output>
+        <input class="w3-col m6 w3-mobile w3-hover-shadow" id="tdur" type="range" min="1" max="5" step="0.01" value="1.5">
+      </div>
+      <div class="w3-row-padding">
+        <label class="w3-col m4 s9" for="m">Decay Profile</label>
+        <output class="w3-col m2 s3 w3-right-align" id="mout" for="m">0.15</output>
+        <input class="w3-col m6 w3-mobile w3-hover-shadow" id="m" type="range" min="0.1" max="0.2" step="0.01" value="0.15">
+      </div>
+      <div class="w3-row-padding w3-padding">
+        <button type="submit" class="w3-right w3-blue w3-btn w3-tiny">Enter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- onload
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script type="text/javascript">
+  $(function() {
+    brython()
+  });
+</script>
+
+
+<!-- Bryton Script
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script type="text/python">
+
+from browser import window, document, alert
+
+numeric = window.numeric
+jq = window.jQuery
+Bokeh = window.Bokeh
+debounce = window.debounce
+
+
+def qcalc(n, alpha, PHRR, tdur, m):
+    """
+    this function calculates a new array of q values for the graph
+    it does this in three zones:
+    zone one: tzero to tone: growth
+    zone two: tone to ttwo: steady burning
+    zone three: ttwo to end: decay
+    """
+    alpha2 = alpha*alpha
+    # calculate what time will be based on
+    # Peak heat release rate and alpha and n
+    tI = round((0.75*(PHRR/alpha2))**(1/n), 1)
+    tdur = tdur*tI
+    tII = round(tI+tdur, 1)  # find ttwo
+    t = 0
+    tlist = []
+    q = []
+    while t < (160):  # while you are in bounds
+        if t <= tI:  # this is zone one, growth
+            q.append(alpha2*(t**n))
+            tlist.append(t)
+            t = round(t + .1, 1)
+        elif (t > tI) and (t <= tII):
+            assert tlist[-1] == tI, (tlist[-1], tI)
+            # this is zone two, steady buring. it is a spline from Q(tone) to
+            # the peak heat release rate back down to Q(ttop)
+            # num = (tII - tI)/.1
+            y = [
+                q[-1],
+                (1.1*(q[-1]+PHRR)/2.),
+                PHRR,
+                (1.1*(q[-1]+PHRR)/2.),
+                q[-1]
+            ]
+            x = numeric.linspace(tI, tII, 5)
+            
+            xnew = numeric.linspace(tI, tII, round((tII-tI)/.1)+1)[1:]
+            ynew = numeric.spline(x, y).at(xnew)
+
+            tlist.extend(xnew)
+            q.extend(ynew)
+
+            t = round(tlist[-1]+.1, 1)
+            assert tlist[-1] == tII, (tlist[-1], tII)
+        elif t > (tII):  # this is zone three, decay
+            a = (.75*PHRR)
+            b = a*((t-tII+1)**(-(0.3-m)))
+            if b > 0:
+                q.append(b-(a-a*((t-tII+1)**(-2*(0.3-m)))))
+            tlist.append(t)
+            t = round(t + .1, 1)
+        else:
+            break
+
+    # Find index of the first negative q, chop it off
+    negatives = [i for i, r in enumerate(q) if r < 0]
+    if negatives:
+      end = negatives[0]
+      q = q[:end]
+      tlist = tlist[:end]
+
+    q = [round(r, 2) for r in q]
+    return q, tlist
+
+
+# Calculate when parameter changed
+def update_xy():
+    n = 2
+    m = float(document["m"].value)
+    tdur = float(document["tdur"].value)
+    PHRR = float(document["PHRR"].value)
+    alpha = float(document["alpha"].value)
+    document["mout"].value = m
+    document["tdurout"].value = tdur 
+    document["alphaout"].value = alpha 
+    document["PHRRout"].value = PHRR 
+    y, x = qcalc(n, alpha, PHRR, tdur, m)
+    return x, y
+
+
+# Initialize Plot
+x, y = update_xy()
+width = document['myform'].clientWidth  # plot size
+source = Bokeh.ColumnDataSource.new({
+    'data': {'x': x, 'y': y}
+})
+tools = "crosshair,box_zoom,reset,save"
+plt = Bokeh.Plotting
+fig = plt.figure({
+    #'title': "Burn Chart",
+    'tools': tools,
+    'width': width,
+    'height': width,
+    'x_range': Bokeh.Range1d(0, 160),
+    'y_range': Bokeh.Range1d(-10, 3510),
+    'x_axis_label': 'time [s]',
+    'y_axis_label': 'Heat Release Rate, HRR [kW]'
+})
+line = fig.line({'field': 'x'}, {'field': 'y'}, {
+    'source': source,
+    'line_width': 2,
+})
+plt.show(fig, "#myplot")
+
+
+# Respond to parameter changes
+def update(ev):
+    x, y = update_xy()
+    source.data['x'] = x
+    source.data['y'] = y
+    source.trigger('change')
+jq("#myform :input").change(update)
+
+
+# Respond to viewport changes
+def resize(ev):
+    width = document['myform'].clientWidth
+    fig.width = width
+    fig.height = width
+    fig.document.resize()
+db_resize = debounce(resize, 250)
+jq(window).on("resize", db_resize)
+
+</script>
