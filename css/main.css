@@ -16,10 +16,12 @@
     border: 0;
 }
 
-/* Define minimum width for larger screens */
+/* Define minimum width and position for plot on larger screens */
 @media only screen and (min-width: 768px) {
   .plot-container {
     min-width: 500px;
+    max-width: 520px;
+    float: right;
   }
 }
 

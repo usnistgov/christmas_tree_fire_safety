@@ -20,9 +20,7 @@ prediction for this year’s competition by adjusting four parameters that
 define: fire growth rate, peak heat release, the duration of steady burning,
 and fire decay.
 
-<div class="w3-right plot-container">
 {% include hrr_plot.html %}
-</div>
 
 You can compare HRR data in the app to previous 
 [experimental measurements](http://fire.nist.gov/bfrlpubs/fire00/PDF/f00147.pdf)[^1] 
