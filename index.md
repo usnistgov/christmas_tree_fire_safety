@@ -9,46 +9,37 @@ css: main_css.html
 
 # Christmas Tree Heat Release Rate (HRR)
 
-Each year since 2014, the Department of Fire Protection Engineering at the
-University of Maryland has hosted an annual competition to predict the burning
-behavior (heat release rate, HRR) of a Fraser Fir Christmas tree from ignition
-to final burnout. More information about this competition can be found at:
+The Department of Fire Protection Engineering at the University of Maryland
+hosts an annual competition to predict the burning behavior (heat release rate,
+HRR) of a Fraser Fir Christmas tree from ignition to final burnout. More
+information about this competition can be found at:
 <http://fpe.umd.edu/christmastreeHRRcompetition>.
+
+{% include hrr_plot.html %}
 
 On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR
 prediction for this year’s competition by adjusting four parameters that
 define: fire growth rate, peak heat release, the duration of steady burning,
 and fire decay.
 
-{% include hrr_plot.html %}
 
-You can compare HRR data in the app to previous 
-[experimental measurements](http://fire.nist.gov/bfrlpubs/fire00/PDF/f00147.pdf)[^1] 
-and [detailed simulations](https://www.firescience.gov/projects/07-1-5-08/project/07-1-5-08_Mell_exp_sim_doug_fir_cf09.pdf)[^2]
-of Christmas tree burning behavior conducted at NIST. Detailed descriptions of
-several key terms – e.g. heat release rate (HRR) – presented on this page are
-also available at the [NIST Fire Dynamics page](https://www.nist.gov/fire-dynamics).
+For over two decades, the Fire Research Division at NIST has supported
+Christmas tree fire safety awareness by conducting multiple burn experiments
+using both dry and wet trees.  Using measurement science based on oxygen
+consumption calorimetry, researchers are able to quantify how rapidly a burning
+tree releases energy (heat release rate). 
 
-In 2017, the Fire Research Division at NIST supported Christmas tree fire
-safety efforts by conducting a series of fire experiments to demonstrate how a
-frequently watered Christmas tree may be less of a fire hazard than a dry one.
-In these experiments, NIST provided the measurement science necessary to
-quantify fire size (i.e. Heat Release Rate, HRR). Results of these experiments
-can be viewed 
-[*here*](https://www.nist.gov/topics/forensic-science/organization-scientific-area-committees-osac/holiday-fire-safety/what-does).
+These experiments are part of a of a larger fire science program to 1) support
+and promote better public awareness of fire safety during the holiday season
+and 2) highlight relevant research projects and tools – both experimental[^1]
+and modeling[^2] – that are developed to quantify the behavior of fire and to
+reduce the impact of fire on people, property, and the environment.
 
-These experiments are part of a greater project that shares a vital fire safety
-message during the holiday season and highlights relevant research projects and
-tools – both experimental and modeling – that are developed to quantify the
-behavior of fire and to reduce the impact of fire on people, property, and the
-environment.
-
-This competition is also supported each year to provide a platform for open
-communication between members of the fire safety science community. Much like
-the ‘Operation Tomodachi – Fire Research’ workshop hosted by NIST in 2015, it
-is desired that this competition will encourage and motivate current
-researchers and the next generation of scientists and engineers to explore and
-develop collaborations related to emerging areas of fire safety science.
+This competition also provides a platform for open communication between
+members of the fire safety science community. This competition provides an
+opportunity to encourage and motivate current researchers and the next
+generation of scientists and engineers to explore and develop collaborations
+related to emerging areas of fire safety science.
 
 {% include ls_fire_research.html %}
 
