@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Christmas Tree HRR Curve
+title: Christmas Tree Heat Release Rate
 description: >- # this means to ignore newlines until "baseurl:"
   On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR
   prediction for this year’s competition by adjusting four parameters that
