@@ -81,6 +81,7 @@ def qcalc(n, alpha, PHRR, tdur, m):
             x = numeric.linspace(tI, tII, 5)
             
             xnew = numeric.linspace(tI, tII, round((tII-tI)/.1)+1)[1:]
+            xnew = [round(t, 1) for t in xnew]
             ynew = numeric.spline(x, y).at(xnew)
 
             tlist.extend(xnew)
