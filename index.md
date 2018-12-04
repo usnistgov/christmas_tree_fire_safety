@@ -13,7 +13,7 @@ The Department of Fire Protection Engineering at the University of Maryland
 hosts an annual competition to predict the burning behavior (heat release rate,
 HRR) of a Fraser Fir Christmas tree from ignition to final burnout. More
 information about this competition can be found at:
-<http://fpe.umd.edu/christmastreeHRRcompetition>.
+<https://fpe.umd.edu/events/christmas-fire-safety-demo>.
 
 {% include hrr_plot.html %}
 

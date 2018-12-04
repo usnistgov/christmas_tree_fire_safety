@@ -21,8 +21,8 @@ $(function () {
       _.map(fields, function(f) { return f.name + ": " + f.value; }), '\n'
     )
     event.preventDefault();
-    link = "mailto:TreeHRR2017@nistgov.onmicrosoft.com" +
-           "?subject=" + escape("HRR Competition 2017") +
+    link = "mailto:treehrr@nist.gov" +
+           "?subject=" + escape("HRR Competition") +
            "&body=" + escape(body);
     window.location.href = link
   })
