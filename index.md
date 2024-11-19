@@ -17,11 +17,9 @@ information about this competition can be found at:
 
 {% include hrr_plot.html %}
 
-On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR
-prediction for this year’s competition by adjusting four parameters that
-define: fire growth rate, peak heat release, the duration of steady burning,
-and fire decay.
+On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR prediction for this year’s competition by adjusting three parameters that define: Peak heat release rate (Peak HRR, kW), time to Peak HRR, and total heat released (MJ).
 
+If you are having trouble automatically generating an email using the 'Submit' button, please (1) click the 'Manual Submission' button, (2) copy the text provided (subject and email main text) into a new email, (3) provide your contact information [do NOT edit parameter values], and (4) send that email to [treehrr@nist.gov](mailto:treehrr@nist.gov).
 
 For over two decades, the Fire Research Division at NIST has supported
 Christmas tree fire safety awareness by conducting multiple burn experiments
