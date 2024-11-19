@@ -1,0 +1,101 @@
+from browser import window, document
+
+jq = window.jQuery
+Bokeh = window.Bokeh
+ld = window._
+math = window.Math
+
+
+def qcalc(phrr, n, Etot):
+    """
+    this function calculates a new array of HRR values for the graph
+    """
+    tn = 2 * n
+    r = (1 - 1 / tn) ** (1 - tn)
+    k = (phrr / (Etot * 1000)) * r
+    t = 0
+    tlist = []  # time list
+    q = []
+    while t < (100):  # while you are in bounds
+        q.append(
+            phrr * tn * r * ((1 - math.exp(-k * t)) ** (tn - 1)) * math.exp(-k * t)
+        )
+        tlist.append(t)
+        t = round(t + 0.1, 1)
+
+    # Find index of the first negative q, chop it off
+    negatives = [i for i, rx in enumerate(q) if rx < 0]
+    if negatives:
+        end = negatives[0]
+        q = q[:end]
+        tlist = tlist[:end]
+
+    q = [round(rx, 2) for rx in q]
+    return q, tlist
+
+
+# Calculate when parameter changed
+def update_xy():
+    n = float(document["n"].value)
+    etot = float(document["etot"].value)
+    phrr = float(document["PHRR"].value)
+
+    document["n_out"].value = n
+    document["etot_out"].value = etot
+    document["phrr_out"].value = phrr
+
+    q, t = qcalc(phrr, n, etot)
+    return t, q
+
+
+# Initialize Plot
+x, y = update_xy()
+width = document["myform"].clientWidth  # plot size
+source = Bokeh.ColumnDataSource.new({"data": {"x": x, "y": y}})
+tools = "crosshair,box_zoom,reset,save"
+x_range = Bokeh.Range1d(0, 100)
+y_range = Bokeh.Range1d(-10, 50000)
+plt = Bokeh.Plotting
+fig = plt.figure(
+    {
+        "tools": tools,
+        "width": width,
+        "height": width,
+        "x_range": x_range,
+        "y_range": y_range,
+        "x_axis_label": "time [s]",
+        "y_axis_label": "Heat Release Rate, HRR [kW]",
+    }
+)
+line = fig.line(
+    {"field": "x"},
+    {"field": "y"},
+    {
+        "source": source,
+        "line_width": 2,
+    },
+)
+plt.show(fig, "#myplot")
+
+
+# Respond to parameter changes
+def update(ev):
+    x, y = update_xy()
+    source.data["x"] = x
+    source.data["y"] = y
+    source.trigger("change")
+
+
+jq("#myform :input").change(update)
+
+
+# Respond to viewport changes
+def resize(ev):
+    width = document["myform"].clientWidth
+    fig.width = width
+    fig.height = width
+    fig.document.resize()
+
+
+db_resize = ld.debounce(resize, 250)
+jq(window).on("resize", db_resize)
