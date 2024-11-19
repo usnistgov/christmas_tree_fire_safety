@@ -19,6 +19,18 @@ $(function () {
     window.location.href = link
   })
 
+  // Copy Results
+  $("#copy-entry").click(function () {
+    var fields = $("#myform").serializeArray();
+    var body = createSubmissionBody(fields);
+    navigator.clipboard.writeText(body);
+    // Inform user that the text has been copied
+    $("#copy-entry").text("Copied!");
+    setTimeout(function () {
+      $("#copy-entry").text("Copy Entry");
+    }, 2000);
+  })
+
   function createSubmissionBody(fields) {
 
     var template = _.template(
