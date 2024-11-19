@@ -22,8 +22,8 @@ $(function () {
     )
     event.preventDefault();
     link = "mailto:treehrr@nist.gov" +
-           "?subject=" + escape("HRR Competition") +
-           "&body=" + escape(body);
+           "?subject=" + encodeURI("HRR Competition") +
+           "&body=" + encodeURI(body);
     window.location.href = link
   })
 })
