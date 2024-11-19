@@ -1,5 +1,7 @@
 // On Load
 $(function () {
+
+  const SUBJECT = "HRR Competition";
   
   // Initialize Brython
   brython();
@@ -7,23 +9,34 @@ $(function () {
   // Submit entry
   $("#myform").submit(function (event) {
     var fields = $(this).serializeArray();
-    var contact = [
-       { name: "Name", value: ''},
-       { name: "Email", value: ''},
-       { name: "Institution", value: ''},
-       { name: "Country/State", value: '', }];
-    var body;
-    body = _.join(
-      _.map(contact, function(f) { return f.name + ": " + f.value; }), '\n'
-    )
-    body += '\n\n';
-    body += _.join(
-      _.map(fields, function(f) { return f.name + ": " + f.value; }), '\n'
-    )
+
+    var body = createSubmissionBody(fields);
+
     event.preventDefault();
     link = "mailto:treehrr@nist.gov" +
-           "?subject=" + encodeURI("HRR Competition") +
+           "?subject=" + encodeURI(SUBJECT) +
            "&body=" + encodeURI(body);
     window.location.href = link
   })
+
+  function createSubmissionBody(fields) {
+
+    var template = _.template(
+      "### Contact Information ###\n\n" +
+      "<%= contact_info %>\n\n\n" +
+      "### Competition Entry ###\n\n" +
+      "<%= competition_entry %>"
+    );
+    var body;
+    var contact_info = "Name: \nEmail: \nInstitution: \nCountry/State: ";
+    var competition_entry = _.join(
+      _.map(fields, function (f) { return f.name + ": " + f.value; }), '\n'
+    );
+
+    body = template({contact_info: contact_info, competition_entry: competition_entry});
+
+    return body;
+  }
+
+
 })
