@@ -17,9 +17,17 @@ information about this competition can be found at:
 
 {% include hrr_plot.html %}
 
-On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR prediction for this year’s competition by adjusting three parameters that define: Peak heat release rate (Peak HRR, kW), time to Peak HRR, and total heat released (MJ).
+On this page, you can ‘build’ (and submit) your own Christmas tree fire HRR
+prediction for this year’s competition by adjusting three parameters that
+define: Peak heat release rate (Peak HRR, kW), time to Peak HRR, and total heat
+released (MJ).
 
-If you are having trouble automatically generating an email using the 'Submit' button, please (1) click the 'Manual Submission' button, (2) copy the text provided (subject and email main text) into a new email, (3) provide your contact information [do NOT edit parameter values], and (4) send that email to [treehrr@nist.gov](mailto:treehrr@nist.gov).
+If you are having trouble automatically generating an email using the 'Submit by
+Email' button, please: (1) Click the 'Copy Entry' button to copy your submission
+entry text, (2) Paste that into the main text field of a new email, (3) Provide
+your contact information [do NOT edit parameter values], (4) Make the email
+subject "HRR Competition", and (5) Send that email to
+[treehrr@nist.gov](mailto:treehrr@nist.gov).
 
 For over two decades, the Fire Research Division at NIST has supported
 Christmas tree fire safety awareness by conducting multiple burn experiments
@@ -44,4 +52,3 @@ related to emerging areas of fire safety science.
 [^1]: Stroup, D.W., DeLauter, J.L., Roadarmel, G., “Scotch Pine Christmas Tree Fire Tests,” NIST Report of Test FR 4010, National Institute of Standards and Technology. December 1, 1999.  <http://fire.nist.gov/bfrlpubs/fire00/PDF/f00147.pdf>. Downloaded November 1, 2017.
 
 [^2]: Mell, W., Maranghides, A., McDermott, R., Manzello, S.L., “Numerical Simulation and Experiments of Burning Douglas Fir Trees,” Combustion and Flame 156: 2023-2041. 2009.  <https://www.firescience.gov/projects/07-1-5-08/project/07-1-5-08_Mell_exp_sim_doug_fir_cf09.pdf> Downloaded November 1, 2017.
-
