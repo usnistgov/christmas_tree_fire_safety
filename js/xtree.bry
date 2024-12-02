@@ -54,7 +54,7 @@ width = document["myform"].clientWidth  # plot size
 source = Bokeh.ColumnDataSource.new({"data": {"x": x, "y": y}})
 tools = "crosshair,box_zoom,reset,save"
 x_range = Bokeh.Range1d(0, 100)
-y_range = Bokeh.Range1d(-10, 50000)
+y_range = Bokeh.Range1d(-10, 75000)
 plt = Bokeh.Plotting
 fig = plt.figure(
     {
