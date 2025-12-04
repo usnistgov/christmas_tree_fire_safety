@@ -2,11 +2,15 @@ from browser import window, document
 
 jq = window.jQuery
 Bokeh = window.Bokeh
-ld = window._
 math = window.Math
+JSON = window.JSON
+
+def to_js_array(py_list):
+    """Convert Python list to JavaScript array."""
+    return JSON.parse(JSON.stringify(py_list))
 
 
-def qcalc(phrr, n, Etot):
+def qcalc(phrr, n, Etot, tdelay):
     """
     this function calculates a new array of HRR values for the graph
     """
@@ -16,9 +20,15 @@ def qcalc(phrr, n, Etot):
     t = 0
     tlist = []  # time list
     q = []
-    while t < (100):  # while you are in bounds
+
+    while t < (tdelay):
+        q.append(0)
+        tlist.append(t)
+        t = round(t + 0.1, 1)
+
+    while t >= (tdelay) and t < (120):
         q.append(
-            phrr * tn * r * ((1 - math.exp(-k * t)) ** (tn - 1)) * math.exp(-k * t)
+            phrr * tn * r * ((1 - math.exp(-k * (t - tdelay))) ** (tn - 1)) * math.exp(-k * (t - tdelay))
         )
         tlist.append(t)
         t = round(t + 0.1, 1)
@@ -39,63 +49,42 @@ def update_xy():
     n = float(document["n"].value)
     etot = float(document["etot"].value)
     phrr = float(document["PHRR"].value)
+    tdelay = float(document["tdelay"].value)
 
     document["n_out"].value = n
     document["etot_out"].value = etot
     document["phrr_out"].value = phrr
+    document["tdelay_out"].value = tdelay
 
-    q, t = qcalc(phrr, n, etot)
+    q, t = qcalc(phrr, n, etot, tdelay)
     return t, q
 
 
 # Initialize Plot
 x, y = update_xy()
-width = document["myform"].clientWidth  # plot size
-source = Bokeh.ColumnDataSource.new({"data": {"x": x, "y": y}})
-tools = "crosshair,box_zoom,reset,save"
-x_range = Bokeh.Range1d(0, 100)
-y_range = Bokeh.Range1d(-10, 75000)
+width = document["myform"].clientWidth
+
+source = Bokeh.ColumnDataSource.new({"data": {"x": to_js_array(x), "y": to_js_array(y)}})
+
 plt = Bokeh.Plotting
-fig = plt.figure(
-    {
-        "tools": tools,
-        "width": width,
-        "height": width,
-        "x_range": x_range,
-        "y_range": y_range,
-        "x_axis_label": "time [s]",
-        "y_axis_label": "Heat Release Rate, HRR [kW]",
-    }
-)
-line = fig.line(
-    {"field": "x"},
-    {"field": "y"},
-    {
-        "source": source,
-        "line_width": 2,
-    },
-)
+fig = plt.figure({
+    "tools": "crosshair,box_zoom,reset,save",
+    "width": width,
+    "height": 400,
+    "x_range": [0, 120],
+    "y_range": [0, 3500],
+    "x_axis_label": "time [s]",
+    "y_axis_label": "Heat Release Rate, HRR [kW]",
+})
+
+fig.line({"field": "x"}, {"field": "y"}, {"source": source, "line_width": 2, "line_color": "red"})
 plt.show(fig, "#myplot")
 
 
 # Respond to parameter changes
 def update(ev):
     x, y = update_xy()
-    source.data["x"] = x
-    source.data["y"] = y
-    source.trigger("change")
+    source.data = {"x": to_js_array(x), "y": to_js_array(y)}
 
 
 jq("#myform :input").change(update)
-
-
-# Respond to viewport changes
-def resize(ev):
-    width = document["myform"].clientWidth
-    fig.width = width
-    fig.height = width
-    fig.document.resize()
-
-
-db_resize = ld.debounce(resize, 250)
-jq(window).on("resize", db_resize)

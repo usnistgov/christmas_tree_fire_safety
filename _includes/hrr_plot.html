@@ -9,18 +9,24 @@
       <form class="w3-small w3-light-grey w3-border w3-border-green w3-padding-small" id="myform">
         <div class="w3-row-padding">
           <label class="w3-col m3 s9" for="PHRR">Peak HRR (kW)</label>
-          <output class="w3-col m2 s3 w3-right-align" id="phrr_out" for="PHRR">10000</output>
-          <input class="w3-col m7 w3-mobile w3-hover-shadow" id="PHRR" type="range" min="1000" max="75000" step="10" name="PHRR" value="15000">
+          <output class="w3-col m2 s3 w3-right-align" id="phrr_out" for="PHRR">1500</output>
+          <input class="w3-col m7 w3-mobile w3-hover-shadow" id="PHRR" type="range" min="0" max="3500" step="10" name="PHRR" value="1500">
         </div>
 
         <div class="w3-row-padding">
           <label class="w3-col m3 s9" for="etot">Total Heat Released (MJ)</label>
-          <output class="w3-col m2 s3 w3-right-align" id="etot_out" for="etot">200</output>
-          <input class="w3-col m7 w3-mobile w3-hover-shadow" id="etot" type="range" min="100" max="1000" step="1" name="Etot" value="200">
+          <output class="w3-col m2 s3 w3-right-align" id="etot_out" for="etot">50</output>
+          <input class="w3-col m7 w3-mobile w3-hover-shadow" id="etot" type="range" min="10" max="200" step="1" name="Etot" value="50">
         </div>
 
         <div class="w3-row-padding">
-          <label class="w3-col m3 s9" for="n">Relative Time to Peak HRR</label>
+          <label class="w3-col m3 s9" for="tdelay">Ignition delay time (s)</label>
+          <output class="w3-col m2 s3 w3-right-align" id="tdelay_out" for="tdelay">10</output>
+          <input class="w3-col m7 w3-mobile w3-hover-shadow" id="tdelay" type="range" min="0" max="60" step="0.1" name="tdelay" value="10">
+        </div>
+
+        <div class="w3-row-padding">
+          <label class="w3-col m3 s9" for="n">Initial Fire Growth Profile</label>
           <output class="w3-col m2 s3 w3-right-align" id="n_out" for="n">5</output>
           <input class="w3-col m7 w3-mobile w3-hover-shadow" id="n" type="range" min="1.0" max="10.0" step="0.1" name="n" value="5">
         </div>
