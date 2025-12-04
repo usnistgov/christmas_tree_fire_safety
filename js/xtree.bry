@@ -62,14 +62,13 @@ def update_xy():
 
 # Initialize Plot
 x, y = update_xy()
-width = document["myform"].clientWidth
 
 source = Bokeh.ColumnDataSource.new({"data": {"x": to_js_array(x), "y": to_js_array(y)}})
 
 plt = Bokeh.Plotting
 fig = plt.figure({
     "tools": "crosshair,box_zoom,reset,save",
-    "width": width,
+    "sizing_mode": "stretch_width",
     "height": 400,
     "x_range": [0, 120],
     "y_range": [0, 3500],
